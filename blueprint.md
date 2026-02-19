@@ -69,6 +69,8 @@ CineVerse is a modern, professional, and feature-rich movie streaming mobile app
 *   **Screens (UI Only):**
     *   `WatchlistScreen`: With a list of saved movies (using dummy data).
     *   `ProfileScreen`: With user information (using dummy data).
+*   **Animations:**
+    *   Implemented a `Hero` animation for the movie poster, providing a smooth transition from the home screen to the movie details screen.
 *   Created reusable widgets for `MovieCard`.
 
 ## Plan
@@ -80,6 +82,6 @@ CineVerse is a modern, professional, and feature-rich movie streaming mobile app
 5.  **Screens:** Build the Home, Search, Movie Detail, and Profile screens. (DONE)
 6.  **Widgets:** Create reusable widgets for movie cards, buttons, and other UI elements. (DONE)
 7.  **API Integration:** Replace dummy data with real data from a movie API. (DONE)
-8.  **State Management:** Use `provider` for state management for watchlist and user profile.
-9.  **Animations:** Implement Hero animations, transitions, and micro-interactions.
+8.  **Animations:** Implement transitions and micro-interactions. Hero animation is done. (In Progress)
+9.  **State Management:** Use `provider` for state management for watchlist and user profile.
 10. **Authentication:** Implement user authentication.

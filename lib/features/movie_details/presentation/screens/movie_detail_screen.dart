@@ -13,15 +13,31 @@ class MovieDetailScreen extends StatefulWidget {
   State<MovieDetailScreen> createState() => _MovieDetailScreenState();
 }
 
-class _MovieDetailScreenState extends State<MovieDetailScreen> {
+class _MovieDetailScreenState extends State<MovieDetailScreen> with SingleTickerProviderStateMixin {
   late Future<MovieDetail> _movieDetail;
   late Future<String?> _movieTrailer;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
     _movieDetail = MovieService().getMovieDetail(int.parse(widget.movieId));
     _movieTrailer = MovieService().getMovieTrailer(int.parse(widget.movieId));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _slideAnimation = Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(_animationController);
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,62 +64,68 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          movie.title,
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.star, color: Colors.yellow, size: 20),
-                            const SizedBox(width: 5),
                             Text(
-                              movie.rating.toString(),
+                              movie.title,
+                              style: Theme.of(context).textTheme.displayLarge,
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, color: Colors.yellow, size: 20),
+                                const SizedBox(width: 5),
+                                Text(
+                                  movie.rating.toString(),
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                const SizedBox(width: 20),
+                                Text(
+                                  '${movie.runtime} min',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                const SizedBox(width: 20),
+                                Text(
+                                  movie.releaseDate,
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            FutureBuilder<String?>(
+                              future: _movieTrailer,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData && snapshot.data != null) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      context.go('/trailer/${snapshot.data}');
+                                    },
+                                    child: const Text('Watch Trailer'),
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Overview',
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(height: 10),
                             Text(
-                              '${movie.runtime} min',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            const SizedBox(width: 20),
-                            Text(
-                              movie.releaseDate,
-                              style: Theme.of(context).textTheme.titleLarge,
+                              movie.overview,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        FutureBuilder<String?>(
-                          future: _movieTrailer,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  context.go('/trailer/${snapshot.data}');
-                                },
-                                child: const Text('Watch Trailer'),
-                              );
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'Overview',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          movie.overview,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
