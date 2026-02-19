@@ -60,14 +60,15 @@ CineVerse is a modern, professional, and feature-rich movie streaming mobile app
     *   Implemented methods to fetch popular, top-rated, now playing, and upcoming movies.
     *   Implemented a method to fetch detailed information for a specific movie.
     *   Implemented a method to search for movies.
+    *   Implemented a method to fetch a movie's trailer.
 *   **Screens (with real data):**
     *   `HomeScreen`: Displays lists of movies fetched from the TMDB API.
-    *   `MovieDetailScreen`: Displays detailed information about a selected movie, fetched from the TMDB API.
+    *   `MovieDetailScreen`: Displays detailed information about a selected movie and a button to watch the trailer, fetched from the TMDB API.
     *   `SearchScreen`: Allows users to search for movies using the TMDB API and displays the results.
+    *   `TrailerScreen`: Plays the movie trailer fetched from the TMDB API.
 *   **Screens (UI Only):**
     *   `WatchlistScreen`: With a list of saved movies (using dummy data).
     *   `ProfileScreen`: With user information (using dummy data).
-    *   `TrailerScreen`: With an embedded YouTube player.
 *   Created reusable widgets for `MovieCard`.
 
 ## Plan
@@ -78,8 +79,7 @@ CineVerse is a modern, professional, and feature-rich movie streaming mobile app
 4.  **Navigation:** Set up routing using `go_router`. (DONE)
 5.  **Screens:** Build the Home, Search, Movie Detail, and Profile screens. (DONE)
 6.  **Widgets:** Create reusable widgets for movie cards, buttons, and other UI elements. (DONE)
-7.  **State Management:** Use `provider` for state management.
-8.  **Animations:** Implement Hero animations, transitions, and micro-interactions.
-9.  **API Integration:** Replace dummy data with real data from a movie API. (DONE)
-10. **State Management:** Implement state management for the watchlist and user profile.
-11. **Authentication:** Implement user authentication.
+7.  **API Integration:** Replace dummy data with real data from a movie API. (DONE)
+8.  **State Management:** Use `provider` for state management for watchlist and user profile.
+9.  **Animations:** Implement Hero animations, transitions, and micro-interactions.
+10. **Authentication:** Implement user authentication.

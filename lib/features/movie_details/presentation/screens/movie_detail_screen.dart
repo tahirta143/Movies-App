@@ -39,11 +39,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    movie.posterUrl,
-                    height: 500,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  Hero(
+                    tag: 'movie-poster-${movie.id}',
+                    child: Image.network(
+                      movie.posterUrl,
+                      height: 500,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
