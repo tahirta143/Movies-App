@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/core/services/movie_service.dart';
 import 'package:myapp/features/movie_details/domain/entities/movie_detail.dart';
+import 'package:provider/provider.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final String movieId;
@@ -21,10 +22,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> with SingleTicker
   late Animation<Offset> _slideAnimation;
 
   @override
-  void initState() {
-    super.initState();
-    _movieDetail = MovieService().getMovieDetail(int.parse(widget.movieId));
-    _movieTrailer = MovieService().getMovieTrailer(int.parse(widget.movieId));
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final movieService = Provider.of<MovieService>(context, listen: false);
+    _movieDetail = movieService.getMovieDetail(int.parse(widget.movieId));
+    _movieTrailer = movieService.getMovieTrailer(int.parse(widget.movieId));
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),

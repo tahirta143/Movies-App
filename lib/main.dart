@@ -1,6 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:myapp/core/services/movie_service.dart';
+import 'package:myapp/core/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+
 import 'package:myapp/core/presentation/widgets/main_navigation.dart';
 import 'package:myapp/features/home/presentation/screens/home_screen.dart';
 import 'package:myapp/features/movie_details/presentation/screens/movie_detail_screen.dart';
@@ -9,15 +14,34 @@ import 'package:myapp/features/profile/presentation/screens/profile_screen.dart'
 import 'package:myapp/features/search/presentation/screens/search_screen.dart';
 import 'package:myapp/features/watchlist/presentation/screens/watchlist_screen.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  runApp(
+    Provider<MovieService>(
+      create: (_) => MovieService(),
+      child: const MyApp(),
+    ),
+  );
+}
 
-final router = GoRouter(
-  navigatorKey: _rootNavigatorKey,
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Movie App',
+      theme: AppTheme.darkTheme,
+      routerConfig: _router,
+    );
+  }
+}
+
+final _router = GoRouter(
   initialLocation: '/',
   routes: [
     ShellRoute(
-      navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
         return MainNavigation(child: child);
       },
@@ -42,17 +66,13 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/movie/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return MovieDetailScreen(movieId: id);
-      },
+      builder: (context, state) =>
+          MovieDetailScreen(movieId: state.pathParameters['id']!),
     ),
     GoRoute(
-      path: '/trailer/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return TrailerScreen(trailerId: id);
-      },
+      path: '/trailer/:key',
+      builder: (context, state) =>
+          TrailerScreen(trailerId: state.pathParameters['key']!),
     ),
   ],
 );

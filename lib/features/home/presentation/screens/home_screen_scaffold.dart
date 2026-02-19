@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/core/services/movie_service.dart';
 import 'package:myapp/features/home/domain/entities/movie.dart';
 import 'package:myapp/features/home/presentation/widgets/movie_card.dart';
+import 'package:provider/provider.dart';
 
 
 class HomeScreenScaffold extends StatefulWidget {
@@ -18,15 +19,14 @@ class _HomeScreenScaffoldState extends State<HomeScreenScaffold> {
   late Future<List<Movie>> _nowPlayingMovies;
   late Future<List<Movie>> _upcomingMovies;
 
-  final _movieService = MovieService();
-
   @override
-  void initState() {
-    super.initState();
-    _popularMovies = _movieService.getPopularMovies();
-    _topRatedMovies = _movieService.getTopRatedMovies();
-    _nowPlayingMovies = _movieService.getNowPlayingMovies();
-    _upcomingMovies = _movieService.getUpcomingMovies();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final movieService = Provider.of<MovieService>(context, listen: false);
+    _popularMovies = movieService.getPopularMovies();
+    _topRatedMovies = movieService.getTopRatedMovies();
+    _nowPlayingMovies = movieService.getNowPlayingMovies();
+    _upcomingMovies = movieService.getUpcomingMovies();
   }
 
   @override

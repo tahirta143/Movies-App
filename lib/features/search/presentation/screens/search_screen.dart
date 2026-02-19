@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/core/services/movie_service.dart';
 import 'package:myapp/features/home/domain/entities/movie.dart';
 import 'package:myapp/features/home/presentation/widgets/movie_card.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -17,8 +18,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _searchMovies() {
     if (_searchController.text.isNotEmpty) {
+      final movieService = Provider.of<MovieService>(context, listen: false);
       setState(() {
-        _searchResults = MovieService().searchMovies(_searchController.text);
+        _searchResults = movieService.searchMovies(_searchController.text);
       });
     }
   }

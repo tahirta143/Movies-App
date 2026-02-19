@@ -1,39 +1,16 @@
 
 import 'package:flutter/material.dart';
-import 'package:myapp/features/profile/presentation/screens/profile_screen.dart';
-import 'package:myapp/features/search/presentation/screens/search_screen.dart';
-import 'package:myapp/features/watchlist/presentation/screens/watchlist_screen.dart';
-import 'package:myapp/main.dart';
+import 'package:go_router/go_router.dart';
 
-class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+class MainNavigation extends StatelessWidget {
+  const MainNavigation({super.key, required this.child});
 
-  @override
-  State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
-  int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    SearchScreen(),
-    WatchlistScreen(),
-    ProfileScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -53,9 +30,40 @@ class _MainNavigationState extends State<MainNavigation> {
             label: 'Profile',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: _calculateSelectedIndex(context),
+        onTap: (int idx) => _onItemTapped(idx, context),
       ),
     );
+  }
+
+  int _calculateSelectedIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+    if (location.startsWith('/search')) {
+      return 1;
+    }
+    if (location.startsWith('/watchlist')) {
+      return 2;
+    }
+    if (location.startsWith('/profile')) {
+      return 3;
+    }
+    return 0;
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    switch (index) {
+      case 0:
+        context.go('/');
+        break;
+      case 1:
+        context.go('/search');
+        break;
+      case 2:
+        context.go('/watchlist');
+        break;
+      case 3:
+        context.go('/profile');
+        break;
+    }
   }
 }
