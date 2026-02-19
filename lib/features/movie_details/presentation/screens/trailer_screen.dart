@@ -36,7 +36,14 @@ class _TrailerScreenState extends State<TrailerScreen> {
         child: YoutubePlayer(
           controller: _controller,
           showVideoProgressIndicator: true,
-          progressIndicatorColor: Colors.red,
+          progressIndicatorColor: Colors.amber,
+          progressColors: const ProgressBarColors(
+            playedColor: Colors.amber,
+            handleColor: Colors.amberAccent,
+          ),
+          onReady: () {
+            // print('Player is ready.');
+          },
         ),
       ),
     );

@@ -45,6 +45,22 @@ class MovieService {
     return _parseMovies(response);
   }
 
+  Future<String?> getMovieTrailer(int movieId) async {
+    final response = await http.get(Uri.parse('$_baseUrl/movie/$movieId/videos?api_key=$_apiKey'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final results = data['results'] as List;
+      if (results.isNotEmpty) {
+        final trailer = results.firstWhere((video) => video['type'] == 'Trailer', orElse: () => null);
+        return trailer != null ? trailer['key'] : null;
+      }
+    } else {
+      throw Exception('Failed to load movie trailer');
+    }
+    return null;
+  }
+
   List<Movie> _parseMovies(http.Response response) {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myapp/core/services/movie_service.dart';
 import 'package:myapp/features/movie_details/domain/entities/movie_detail.dart';
 
@@ -14,11 +15,13 @@ class MovieDetailScreen extends StatefulWidget {
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   late Future<MovieDetail> _movieDetail;
+  late Future<String?> _movieTrailer;
 
   @override
   void initState() {
     super.initState();
     _movieDetail = MovieService().getMovieDetail(int.parse(widget.movieId));
+    _movieTrailer = MovieService().getMovieTrailer(int.parse(widget.movieId));
   }
 
   @override
@@ -73,6 +76,21 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           ],
                         ),
                         const SizedBox(height: 20),
+                        FutureBuilder<String?>(
+                          future: _movieTrailer,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return ElevatedButton(
+                                onPressed: () {
+                                  context.go('/trailer/${snapshot.data}');
+                                },
+                                child: const Text('Watch Trailer'),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                        const SizedBox(height: 20),
                         Text(
                           'Overview',
                           style: Theme.of(context).textTheme.titleLarge,
@@ -101,4 +119,3 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     );
   }
 }
-

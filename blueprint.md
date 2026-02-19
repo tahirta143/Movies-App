@@ -48,31 +48,38 @@ CineVerse is a modern, professional, and feature-rich movie streaming mobile app
 *   **Dark/Light Mode Toggle:** A toggle to switch between dark and light themes.
 *   **Profile Page:** A profile page with a user avatar and settings.
 
-## Current Implementation (UI Only)
+## Current Implementation
 
 *   Created the basic project structure with `core`, `features`, and `main.dart`.
 *   Defined the app's dark theme in `lib/core/theme/app_theme.dart`.
-*   Added dependencies: `go_router`, `provider`, `google_fonts`, `flutter_svg`, and `youtube_player_flutter`.
+*   Added dependencies: `go_router`, `provider`, `google_fonts`, `flutter_svg`, `youtube_player_flutter`, `http`, and `flutter_dotenv`.
 *   Set up navigation using `go_router` for all the screens.
-*   Built the UI for the following screens with dummy data:
-    *   `HomeScreen`: With a hero banner and horizontal movie lists.
-    *   `SearchScreen`: With a glassmorphism search bar and a grid view for results.
-    *   `WatchlistScreen`: With a list of saved movies.
-    *   `ProfileScreen`: With user information.
-    *   `MovieDetailScreen`: With a backdrop image, movie info, cast list, and a "Watch Trailer" button.
+*   **API Integration:**
+    *   Created a `MovieService` to interact with the TMDB API.
+    *   Added `flutter_dotenv` to manage the API key securely.
+    *   Implemented methods to fetch popular, top-rated, now playing, and upcoming movies.
+    *   Implemented a method to fetch detailed information for a specific movie.
+    *   Implemented a method to search for movies.
+*   **Screens (with real data):**
+    *   `HomeScreen`: Displays lists of movies fetched from the TMDB API.
+    *   `MovieDetailScreen`: Displays detailed information about a selected movie, fetched from the TMDB API.
+    *   `SearchScreen`: Allows users to search for movies using the TMDB API and displays the results.
+*   **Screens (UI Only):**
+    *   `WatchlistScreen`: With a list of saved movies (using dummy data).
+    *   `ProfileScreen`: With user information (using dummy data).
     *   `TrailerScreen`: With an embedded YouTube player.
 *   Created reusable widgets for `MovieCard`.
 
 ## Plan
 
-1.  **Project Structure:** Create a well-organized project structure with `core`, `features`, and `main.dart`.
-2.  **Theme:** Define the app's theme in `lib/core/theme/theme.dart`.
-3.  **Dependencies:** Add necessary dependencies to `pubspec.yaml`.
-4.  **Navigation:** Set up routing using `go_router`.
-5.  **Screens:** Build the Home, Search, Movie Detail, and Profile screens.
-6.  **Widgets:** Create reusable widgets for movie cards, buttons, and other UI elements.
+1.  **Project Structure:** Create a well-organized project structure with `core`, `features`, and `main.dart`. (DONE)
+2.  **Theme:** Define the app's theme in `lib/core/theme/theme.dart`. (DONE)
+3.  **Dependencies:** Add necessary dependencies to `pubspec.yaml`. (DONE)
+4.  **Navigation:** Set up routing using `go_router`. (DONE)
+5.  **Screens:** Build the Home, Search, Movie Detail, and Profile screens. (DONE)
+6.  **Widgets:** Create reusable widgets for movie cards, buttons, and other UI elements. (DONE)
 7.  **State Management:** Use `provider` for state management.
 8.  **Animations:** Implement Hero animations, transitions, and micro-interactions.
-9.  **API Integration:** Replace dummy data with real data from a movie API.
+9.  **API Integration:** Replace dummy data with real data from a movie API. (DONE)
 10. **State Management:** Implement state management for the watchlist and user profile.
 11. **Authentication:** Implement user authentication.
